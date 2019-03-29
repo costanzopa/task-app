@@ -3,33 +3,35 @@ const express = require('express'),
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  User.find({}).then((users) => {
-    res.send(users);
-  }).catch((e) => {
-    res.status(500).send(e);
-  });
-});
-
-router.get('/:id', function(req, res, next) {
-    const _id = req.params.id;
-    User.findById(_id).then((user) => {
-      if(!user) {
-        return res.status(404).send();
-      }
-      res.send(user);
-    }).catch((e) => {
+router.get('/', async (req, res) => {
+    try {
+       const users = await User.find({});
+       res.send(users);
+    }catch (e) {
         res.status(500).send(e);
-    });
+    }
 });
 
-router.post('/', (req, res, next) => {
+router.get('/:id', async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const user = await User.findById(_id);
+        if(!user) {
+            return res.status(404).send();
+        }
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.post('/', async (req, res) => {
   const user = new User(req.body);
-  User.create(user).then(() => {
+  await User.create(user);
+  try {
       res.status(201).send(user);
-  }).catch((e) => {
+  } catch (e) {
       res.status(400).send(e);
-  });
+  }
 });
 
 
