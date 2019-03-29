@@ -15,7 +15,8 @@ var url = process.env.DATABASEURL || "mongodb://127.0.0.1:27017/task-app-api";
 
 mongoose.connect(url, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 
