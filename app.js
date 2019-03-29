@@ -1,21 +1,27 @@
 const mongoose = require('mongoose'),
-      User     = require("./models/user");
+      express  = require('express');
+      app       = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/task-app-api', {
+
+//Parse incoming data to json
+app.use(express.json());
+
+// Requiring routes
+var usersRoutes = require("./routes/users");
+
+// Conecting to the database
+var url = process.env.DATABASEURL || "mongodb://127.0.0.1:27017/task-app-api";
+
+mongoose.connect(url, {
     useNewUrlParser: true,
     useCreateIndex: true
 });
 
 
-const me = new User( {
-   name: 'Pablo Costanzo',
-   email: 'costanzopa@gmail.com',
-   age: '30'
-});
+app.use("/users", usersRoutes);
 
-
-User.create(me).then(() => {
-  console.log(me)
-}).catch((error) => {
-  console.log('Error', error);
+//Connecting the Server
+const port =process.env.PORT || 3000;
+app.listen(port, ()=> {
+    console.log('Server is up on port ' + port);
 });
