@@ -58,4 +58,17 @@ router.post('/', async (req, res) => {
 });
 
 
+router.delete('/:id', async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const user = await User.findByIdAndDelete(_id);
+        if(!user) {
+            return res.status(404).send();
+        }
+        res.send(user);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 module.exports = router;
