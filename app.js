@@ -8,8 +8,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-app-api', {
 
 
 const me = new User( {
-   username: 'costanzopa@gmail.com',
-   password: '123456'
+   name: 'Pablo Costanzo',
+   email: 'costanzopa@gmail.com',
+   age: '30'
 });
 
 
