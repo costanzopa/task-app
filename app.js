@@ -7,7 +7,8 @@ const mongoose = require('mongoose'),
 app.use(express.json());
 
 // Requiring routes
-var usersRoutes = require("./routes/users");
+var usersRoutes = require("./routes/users"),
+    tasksRoutes = require("./routes/tasks");
 
 // Conecting to the database
 var url = process.env.DATABASEURL || "mongodb://127.0.0.1:27017/task-app-api";
@@ -19,6 +20,7 @@ mongoose.connect(url, {
 
 
 app.use("/users", usersRoutes);
+app.use("/tasks", tasksRoutes);
 
 //Connecting the Server
 const port =process.env.PORT || 3000;

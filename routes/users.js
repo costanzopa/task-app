@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 router.post('/', (req, res, next) => {
   const user = new User(req.body);
   User.create(user).then(() => {
-      res.send(user);
+      res.status(201).send(user);
   }).catch((e) => {
       res.status(400).send(e);
   });
