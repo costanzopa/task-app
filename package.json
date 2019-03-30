@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev":   "nodemon -e js,hbs db/mongodb.js"
+    "dev": "nodemon -e js,hbs db/mongodb.js"
   },
   "dependencies": {
+    "bcrypt": "^3.0.5",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",

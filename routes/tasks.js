@@ -1,6 +1,6 @@
 const express = require('express'),
       Task    = require('../models/task');
-var   router = express.Router();
+const router  = express.Router();
 
 /* GET Tasks listing. */
 router.get('/', async (req, res) =>{
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res, next) =>{
 });
 
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['description', 'completed'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -36,11 +36,14 @@ router.patch('/users/:id', async (req, res) => {
     }
 
     try {
-        const task = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const task = await Task.findById(req.params.id);
 
         if (!task) {
             return res.status(404).send()
         }
+
+        updates.forEach((update) => task[update] = req.body[update]);
+        await task.save();
 
         res.send(task)
     } catch (e) {
@@ -52,7 +55,7 @@ router.patch('/users/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const task = new Task(req.body);
     try {
-        await Task.create(task);
+        await task.save();
         res.status(201).send(task);
     } catch (e) {
         res.status(400).send(e);
