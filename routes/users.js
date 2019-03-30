@@ -60,6 +60,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+    try {
+       const user = await User.findByCredentials(req.body.email, req.body.password);
+       res.send(user);
+   } catch (e) {
+        res.status(400).send();
+   }
+});
 
 router.delete('/:id', async (req, res) => {
     const _id = req.params.id;
