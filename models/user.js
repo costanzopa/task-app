@@ -1,6 +1,7 @@
 const mongoose  = require("mongoose"),
       validator = require('validator'),
-      bcrypt    = require('bcrypt');
+      bcrypt    = require('bcrypt'),
+      jwt       = require('jsonwebtoken');
 
 
 var UserSchema = new mongoose.Schema({
@@ -40,8 +41,23 @@ var UserSchema = new mongoose.Schema({
                 throw new Error('Password cannot contain "password"');
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
+
+//Generate web token
+UserSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  const token = jwt.sign({_id: user._id.toString()}, 'thisismynewcourse');
+  user.tokens = user.tokens.concat({token});
+  await user.save();
+  return token;
+};
 
 //Check credentials
 UserSchema.statics.findByCredentials = async (email, password) => {
@@ -68,7 +84,7 @@ UserSchema.pre('save', async function(next) {
     next();
 });
 
-const User = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
 

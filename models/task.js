@@ -6,6 +6,6 @@ var TaskSchema = new mongoose.Schema({
     completed: Boolean
 });
 
-const Task = mongoose.model('Task', TaskSchema)
+const Task = mongoose.model('Task', TaskSchema);
 
 module.exports = Task;
