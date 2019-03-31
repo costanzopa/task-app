@@ -59,6 +59,17 @@ UserSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
+//Override JSON function to hide data
+UserSchema.methods.toJSON = function() {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+};
+
 //Check credentials
 UserSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({email: email});
