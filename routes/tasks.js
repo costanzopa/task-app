@@ -6,13 +6,15 @@ const router  = express.Router();
 /* GET Tasks listing. */
 router.get('/', auth ,async (req, res) =>{
     const match = {owner: req.user._id};
+    const skipping = parseInt(req.query.skip) || 0;
+    const limiting = parseInt(req.query.limit) || 0;
 
     if (req.query.completed) {
         match.completed = req.query.completed === 'true';
     }
 
     try {
-        const tasks = await Task.find(match);
+        const tasks = await Task.find(match).limit(limiting).skip(skipping);
         res.send(tasks);
     } catch (e) {
         res.status(500).send(e);
