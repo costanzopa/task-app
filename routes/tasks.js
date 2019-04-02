@@ -5,8 +5,14 @@ const router  = express.Router();
 
 /* GET Tasks listing. */
 router.get('/', auth ,async (req, res) =>{
+    const match = {owner: req.user._id};
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true';
+    }
+
     try {
-        const tasks = await Task.find({owner: req.user._id});
+        const tasks = await Task.find(match);
         res.send(tasks);
     } catch (e) {
         res.status(500).send(e);
