@@ -1,7 +1,8 @@
 const mongoose  = require("mongoose"),
       validator = require('validator'),
       bcrypt    = require('bcrypt'),
-      jwt       = require('jsonwebtoken');
+      jwt       = require('jsonwebtoken'),
+      Task      = require('./task');
 
 
 var UserSchema = new mongoose.Schema({
@@ -102,8 +103,17 @@ UserSchema.pre('save', async function(next) {
     next();
 });
 
+
+//bind this (document)/ removing all task middleware
+UserSchema.pre('remove', async function(next) {
+    const user = this;
+    //console.log(user);
+    await Task.deleteMany({owner: user._id});
+
+    next();
+});
+
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
-
-
