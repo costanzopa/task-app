@@ -1,7 +1,13 @@
 const express = require('express'),
       User    = require('../models/user'),
-      auth    = require('../middleware/auth');
+      auth    = require('../middleware/auth'),
+      multer  = require('multer');
+
 const router  = express.Router();
+
+const avatar  = multer({
+    dest: 'avatars'
+});
 
 /* GET current profile*/
 router.get('/me', auth, async (req, res) => {
@@ -72,6 +78,11 @@ router.post('/logoutAll', auth, async (req, res) => {
         res.status(500).send();
     }
 });
+
+router.post('/me/avatar', avatar.single('avatar'), (req, res) => {
+    res.send();
+});
+
 
 router.delete('/me', auth, async (req, res) => {
     try {
