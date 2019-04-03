@@ -5,16 +5,16 @@ const express = require('express'),
 
 const router  = express.Router();
 
-const avatar  = multer({
-    dest: 'avatars',
+const upload = multer({
     limits: {
-        fileSize: 1000000,
+        fileSize: 1000000
     },
     fileFilter(req, file, cb) {
-        if(!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
-            return cb(new Error('Please upload an image.'))
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please upload an image'))
         }
-        cb(undefined, true);
+
+        cb(undefined, true)
     }
 });
 
@@ -88,13 +88,18 @@ router.post('/logoutAll', auth, async (req, res) => {
     }
 });
 
-router.post('/me/avatar', avatar.single('avatar'), (req, res) => {
-    res.send();
+router.post('/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+    req.user.avatar = req.file.buffer;
+    await req.user.save();
+    res.send()
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
 });
 
 
 router.delete('/me', auth, async (req, res) => {
     try {
+        req.user.avatar = undefined;
         await req.user.remove();
         res.send(req.user)
     } catch (e) {

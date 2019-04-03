@@ -1,6 +1,6 @@
 const mongoose  = require("mongoose"),
       validator = require('validator'),
-      bcrypt    = require('bcrypt'),
+      bcrypt    = require('bcryptjs'),
       jwt       = require('jsonwebtoken'),
       Task      = require('./task');
 
@@ -48,7 +48,10 @@ var UserSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    avatar: {
+        type: Buffer
+    }
 }, {
     timestamps: true
 });
@@ -59,6 +62,7 @@ UserSchema.virtual('tasks', {
    localField: '_id',
    foreignField: 'owner'
 });
+
 
 //Generate web token
 UserSchema.methods.generateAuthToken = async function () {
