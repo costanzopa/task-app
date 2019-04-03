@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon -e js,hbs db/mongodb.js"
+    "dev": " env-cmd ./config/dev.env nodemon -e js,hbs db/mongodb.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
@@ -23,6 +23,7 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
+    "env-cmd": "^8.0.2",
     "nodemon": "^1.18.10"
   }
 }
