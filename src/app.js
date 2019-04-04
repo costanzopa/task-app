@@ -23,8 +23,4 @@ mongoose.connect(url, {
 app.use("/users", usersRoutes);
 app.use("/tasks", tasksRoutes);
 
-//Connecting the Server
-const port =process.env.PORT;
-app.listen(port, ()=> {
-    console.log('Server is up on port ' + port);
-});
+module.exports = app;

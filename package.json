@@ -3,8 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js",
-    "dev": " env-cmd ./config/dev.env nodemon -e js,hbs db/mongodb.js"
+    "start": "node ./src/index.js",
+    "dev": " env-cmd ./config/dev.env nodemon -e js,hbs ./src/index.js",
+    "test": " env-cmd ./config/test.env jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
@@ -24,6 +28,8 @@
   },
   "devDependencies": {
     "env-cmd": "^8.0.2",
-    "nodemon": "^1.18.10"
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.2"
   }
 }
