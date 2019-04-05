@@ -1,26 +1,12 @@
-const mongoose = require('mongoose'),
-      express  = require('express');
-      app       = express();
+const express = require('express')
+require('./db/mongoose')
+const userRouter = require('./routers/user')
+const taskRouter = require('./routers/task')
 
+const app = express()
 
-//Parse incoming data to json
-app.use(express.json());
+app.use(express.json())
+app.use(userRouter)
+app.use(taskRouter)
 
-// Requiring routes
-var usersRoutes = require("./routes/users"),
-    tasksRoutes = require("./routes/tasks");
-
-// Conecting to the database
-var url = process.env.DATABASEURL;
-
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-});
-
-
-app.use("/users", usersRoutes);
-app.use("/tasks", tasksRoutes);
-
-module.exports = app;
+module.exports = app

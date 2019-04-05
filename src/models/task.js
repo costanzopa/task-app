@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-
-var TaskSchema = new mongoose.Schema({
+const taskSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
@@ -18,8 +17,8 @@ var TaskSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true
-});
+})
 
-const Task = mongoose.model('Task', TaskSchema);
+const Task = mongoose.model('Task', taskSchema)
 
-module.exports = Task;
+module.exports = Task
